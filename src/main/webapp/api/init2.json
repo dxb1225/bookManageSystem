@@ -1,0 +1,40 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "welcome"
+  },
+  "logoInfo": {
+    "title": "图书馆",
+    "image": "images/logo.png",
+    "href": "https://gitee.com/lgc1998/libraryManagementSystem.git"
+  },
+  "menuInfo": [
+    {
+      "title": "功能管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+          {
+              "title": "系统公告",
+              "href": "noticeIndexOfReader",
+              "icon": "fa fa-window-maximize",
+              "target": "_self"
+          },
+          {
+            "title": "借阅时间线",
+            "href": "queryLookBookList2",
+            "icon": "fa fa-gears",
+            "target": "_self"
+          },
+          {
+            "title": "借阅与归还",
+            "href": "lendListIndex2",
+            "icon": "fa fa-window-maximize",
+            "target": "_self"
+          }
+      ]
+    }
+
+  ]
+}

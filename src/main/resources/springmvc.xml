@@ -30,7 +30,7 @@
     <!--开启对静态资源的访问-->
     <mvc:default-servlet-handler/>
 
-    <mvc:view-controller path="/" view-name="index"/>
+    <mvc:view-controller path="/" view-name="login"/>
 
     <!--开启MVC注解驱动-->
     <mvc:annotation-driven>
