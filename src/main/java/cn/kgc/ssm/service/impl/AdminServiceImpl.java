@@ -1,7 +1,9 @@
 package cn.kgc.ssm.service.impl;
 
+import cn.kgc.ssm.mapper.AdminMapper;
 import cn.kgc.ssm.pojo.Admin;
 import cn.kgc.ssm.service.AdminService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,8 +15,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AdminServiceImpl implements AdminService {
+
+    @Autowired
+    private AdminMapper adminMapper;
+
     @Override
     public Admin queryUserByNameAndPassword(String username, String password) {
-        return null;
+
+        return adminMapper.queryUserByNameAndPassword(username, password);
     }
 }

@@ -81,7 +81,7 @@
      * 获取验证码
      */
     function getCode(){
-        document.getElementById("code").src=timestamp("verifyCode");
+        document.getElementById("code").src=timestamp("/verifyCode");
     }
 
     /**
