@@ -12,13 +12,13 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <script type="text/javascript" th:src="@{/lib/jquery-3.4.1/jquery-3.4.1.min.js}"></script>
-    <link rel="stylesheet" th:href="@{/lib/layui-v2.5.5/css/layui.css}" media="all">
-    <link rel="stylesheet" th:href="@{/css/public.css}" media="all">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/public.css" media="all">
 
     <style>
         html, body {width: 100%;height: 100%;overflow: hidden}
-        body {background: url("/images/bg.png") no-repeat center;}
+        body {background: url("${pageContext.request.contextPath}/images/bg.png") no-repeat center;}
         body:after {content:'';background-repeat:no-repeat;background-size:cover;-webkit-filter:blur(3px);-moz-filter:blur(3px);-o-filter:blur(3px);-ms-filter:blur(3px);filter:blur(3px);position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;}
         .layui-container {width: 100%;height: 100%;overflow: hidden}
         .admin-login-background {width:450px;height:300px;position:absolute;left:65%;top:45%;margin-top:-120px;margin-left:-50px;opacity:0.9;}
@@ -36,10 +36,10 @@
 <div class="layui-container">
     <div class="admin-login-background">
         <div class="layui-form login-form">
-            <form class="layui-form"  th:action="@{/loginIn}" method="post">
+            <form class="layui-form"  action="${pageContext.request.contextPath}/loginIn" method="post">
                 <div class="layui-form-item logo-title">
                     <h1>图书管理系统</h1>
-                    <div style="color: red;text-align: center;" th:text="${msg}"></div>
+                    <div style="color: red;text-align: center;">${msg}</div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-username"></label>
@@ -74,7 +74,7 @@
         </div>
     </div>
 </div>
-<script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
+<script src="${pageContext.request.contextPath}/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script type="text/javascript">
     getCode();
     /**

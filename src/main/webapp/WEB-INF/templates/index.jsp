@@ -18,11 +18,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <link rel="icon" th:href="@{/images/favicon.ico}">
-    <link rel="stylesheet" th:href="@{/lib/layui-v2.5.5/css/layui.css}" media="all">
-    <link rel="stylesheet" th:href="@{/css/layuimini.css(v=2.0.4)}" media="all">
-    <link rel="stylesheet" th:href="@{/css/themes/default.css}" media="all">
-    <link rel="stylesheet" th:href="@{/lib/font-awesome-4.7.0/css/font-awesome.min.css}" media="all">
+    <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/layuimini.css?v=2.0.4" media="all">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/themes/default.css" media="all">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -128,8 +128,8 @@
 
     </div>
 </div>
-<script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
-<script th:src="@{/js/lay-config.js(v=2.0.0)}" charset="utf-8"></script>
+<script src="${pageContext.request.contextPath}/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="${pageContext.request.contextPath}/js/lay-config.js?v=2.0.0" charset="utf-8"></script>
 <script>
     layui.use(['jquery', 'layer', 'miniAdmin','miniTongji'], function () {
         var $ = layui.jquery,
