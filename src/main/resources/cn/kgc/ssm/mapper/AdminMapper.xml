@@ -5,4 +5,16 @@
     <select id="queryUserByNameAndPassword" resultType="admin">
         select * from admin where username=#{username} and password=#{password}
     </select>
+
+    <select id="queryAdminAll" parameterType="admin" resultType="admin">
+        SELECT * from admin
+        <where>
+            <if test="username!=null">
+                and username like '%${username}%'
+            </if>
+            <if test="adminType!=null">
+                and adminType like '%${adminType}%'
+            </if>
+        </where>
+    </select>
 </mapper>

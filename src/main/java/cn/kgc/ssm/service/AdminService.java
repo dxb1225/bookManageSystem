@@ -1,6 +1,7 @@
 package cn.kgc.ssm.service;
 
 import cn.kgc.ssm.pojo.Admin;
+import com.github.pagehelper.PageInfo;
 
 /**
  * @Author:邓湘标
@@ -11,4 +12,6 @@ import cn.kgc.ssm.pojo.Admin;
  */
 public interface AdminService {
     Admin queryUserByNameAndPassword(String username, String password);
+
+    PageInfo<Admin> queryAdminAll(Admin admin, Integer pageNum);
 }
