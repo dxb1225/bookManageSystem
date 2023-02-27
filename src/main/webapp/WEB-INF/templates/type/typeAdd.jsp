@@ -1,6 +1,6 @@
-<!--<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>-->
-<!--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>-->
-<!--<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>-->
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
@@ -35,19 +35,40 @@
 
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+            <button type="submit" class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
         </div>
     </div>
 </div>
 <script src="${pageContext.request.contextPath}/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script>
     layui.use(['form'], function () {
-        var form = layui.form,
+        let form = layui.form,
             layer = layui.layer,
             $ = layui.$;
 
-        form.on('submit(saveBtn)', function () {
-            layer.msg("请联系QQ:1919066898 购买此系统");
+        form.on('submit(saveBtn)', function (data) {
+            let datas=data.field;
+            $.ajax({
+                url:"addTypeSubmit",
+                type:"POST",
+                data:datas,
+                success:function (result) {
+                    if (result>0){
+                        layer.msg('添加成功',{
+                            icon:6,
+                            time:500
+                        },function () {
+                            let iframeIndex =parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(iframeIndex);
+                            parent.location.reload();
+                        })
+                    }else {
+                        layer.msg("类型添加失败");
+                    }
+
+                }
+            })
+            return false;
         });
     });
 </script>

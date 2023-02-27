@@ -3,16 +3,20 @@ package cn.kgc.ssm.controller;
 import cn.kgc.ssm.pojo.Admin;
 import cn.kgc.ssm.service.AdminService;
 import cn.kgc.ssm.utils.DataInfo;
+import com.alibaba.druid.sql.visitor.functions.If;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -37,9 +41,51 @@ public class AdminController {
     @ResponseBody
     public DataInfo queryAdminAll(Admin admin, @RequestParam(defaultValue = "1")Integer pageNum){
         PageInfo<Admin> pageInfo = adminService.queryAdminAll(admin, pageNum);
-        Map<String,Object> map = new HashMap<>();
-        map.put("ok", pageInfo.getList());
         return DataInfo.ok("ok",pageInfo.getTotal(),pageInfo.getList());
+    }
+
+    @RequestMapping("/queryAdminById")
+    public String queryAdminById(Integer id, Model model){
+        Admin admin = adminService.queryAdminById(id);
+        model.addAttribute("admin", admin);
+        return "admin/updateAdmin";
+    }
+
+    @RequestMapping("/findAllAdminType")
+    @ResponseBody
+    public List<Integer> findAll(Integer id){
+        List<Integer> allAdminType = adminService.findAllAdminType();
+        return allAdminType;
+    }
+
+    @RequestMapping("/admin/updateAdmin")
+    @ResponseBody
+    public boolean updateAdmin(Admin admin){
+        boolean flag = false;
+        int i = adminService.updateAdminById(admin);
+        if(i>0){
+            flag=true;
+        }
+        return flag;
+    }
+
+    @RequestMapping("/adminAdd")
+    public String adminAdd(){
+        return "admin/adminAdd";
+    }
+
+    @RequestMapping("/addAdmin")
+    @ResponseBody
+    public int addAdmin(Admin admin){
+        int i = adminService.addAdmin(admin);
+        return i;
+    }
+
+    @RequestMapping("/deleteAdmin")
+    @ResponseBody
+    public int deleteAdmin(@Param("id") Integer id){
+        int i = adminService.deleteAdmin(id);
+        return i;
     }
 
 }

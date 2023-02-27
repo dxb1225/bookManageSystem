@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kgc.ssm.mapper.TypeInfoMapper">
+
+    <select id="queryTypeInfoAll" resultType="typeInfo">
+        select * from type_info
+        <where>
+            <if test="name != null and null != ''">
+                name like '%${name}%'
+            </if>
+        </where>
+
+    </select>
+
+    <insert id="addTypeSubmit" parameterType="typeInfo" >
+        insert into type_info
+        (name,remarks)
+        values
+        (#{name},#{remarks})
+
+    </insert>
+
+    <!--根据id查询类型信息-->
+    <select id="queryTypeInfoById" resultType="typeInfo">
+        select * from type_info where id=#{id}
+    </select>
+
+    <!--修改图书类型-->
+    <update id="updateTypeSubmit" parameterType="typeInfo">
+        update type_info set
+        <trim suffixOverrides=",">
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="remarks!=null">
+                remarks=#{remarks}
+            </if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <!--删除类型-->
+    <delete id="deleteTypeByIds" parameterType="List">
+        delete from type_info where id in
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteTypeById">
+        delete from type_info where id=#{id}
+    </delete>
+
+
+    <select id="queryTypeName" resultType="typeInfo">
+        select type.name
+        from type_info type
+    </select>
+</mapper>

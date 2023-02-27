@@ -1,8 +1,8 @@
-<!--<%@ page contentType="text/html;charset=UTF-8" language="java" %>-->
-<!--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>-->
-<!--<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>-->
-<!--<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>-->
-<!--<%@ page isELIgnored="false" %>-->
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page isELIgnored="false" %>
 
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
@@ -91,8 +91,32 @@
             trigger:'click'
         });
 
-        form.on('submit(saveBtn)', function () {
-            layer.msg("请联系QQ:1919066898 购买此系统");
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            var datas=data.field;//form单中的数据信息
+            //向后台发送数据提交添加
+            $.ajax({
+                url:"updateReaderSubmit",
+                type:"POST",
+                //data:datas,
+                contentType:'application/json',
+                data:JSON.stringify(datas),
+                success:function(result){
+                    if(result.code==0){//如果成功
+                        layer.msg('修改成功',{
+                            icon:6,
+                            time:500
+                        },function(){
+                            parent.window.location.reload();
+                            var iframeIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(iframeIndex);
+                        })
+                    }else{
+                        layer.msg("修改失败");
+                    }
+                }
+            })
+            return false;
         });
     });
 </script>

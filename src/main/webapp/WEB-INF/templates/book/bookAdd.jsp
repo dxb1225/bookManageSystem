@@ -117,8 +117,24 @@
             form.render('select');
         },"json")
 
-        form.on('submit(saveBtn)', function () {
-            layer.msg("请联系QQ:1919066898 购买此系统");
+        form.on('submit(saveBtn)', function (data) {
+            let url="${pageContext.request.contextPath}/bookAdd";
+            $.post(url,data.field,function (result){
+                if (result==1){
+                    layer.msg('新增成功',function(){
+                        let index = parent.layer.getFrameIndex(window.name);
+                        setTimeout(function () {parent.layer.close(index)},330);
+                        parent.location.reload();
+                        });
+
+                }else{
+                    alert("新增失败");
+
+                }
+
+
+            },
+            "json");
         });
     });
 </script>

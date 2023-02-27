@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kgc.ssm.mapper.BookInfoMapper">
+    <resultMap id="BaseResultMap" type="bookInfo">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="author" column="author"/>
+        <result property="publish" column="publish"/>
+        <result property="isbn" column="isbn"/>
+        <result property="introduction" column="introduction"/>
+        <result property="language" column="language"/>
+        <result property="price" column="price"/>
+        <result property="publishDate" column="publish_date"/>
+        <result property="typeId" column="type_id"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <select id="findAll" parameterType="bookInfo" resultMap="queryListMap">
+        select bi.*,bi.id as bi_id,ty.name as type_name
+        from book_info bi,type_info ty
+        where bi.type_id = ty.id
+        <if test="name!=null">
+            and bi.name like '%${name}%'
+        </if>
+        <if test="isbn!=null">
+            and bi.isbn like '%${isbn}%'
+        </if>
+        <if test="typeId!=null">
+            and bi.type_id like '%${typeId}%'
+        </if>
+        order by bi.id=#{id}
+    </select>
+
+    <resultMap id="queryListMap" type="bookInfo" extends="BaseResultMap">
+        <association property="typeInfo" javaType="typeInfo">
+            <id property="id" column="id"/>
+            <result property="name" column="type_name"/>
+        </association>
+    </resultMap>
+
+
+
+    <insert id="addbookInfo" parameterType="bookInfo">
+        INSERT INTO book_info(NAME,author,publish,isbn,introduction,LANGUAGE,price,publish_date,type_id)
+        VALUES (#{name},#{author},#{publish},#{isbn},#{introduction},#{language},#{price},#{publishDate},#{typeId})
+    </insert>
+
+    <delete id="deletebookInfo" parameterType="int">
+        DELETE FROM `book_info` WHERE id=#{id}
+    </delete>
+
+    <delete id="deletebookInfoByIds" parameterType="string">
+        DELETE FROM `book_info` WHERE id IN(${ids})
+    </delete>
+
+    <select id="findbookInfoById" parameterType="int" resultType="bookInfo">
+        SELECT * FROM book_info WHERE id=#{id}
+    </select>
+    <update id="updatebookInfo" parameterType="bookInfo">
+        UPDATE book_info  SET
+        <trim suffixOverrides=",">
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="author!=null">
+                author=#{author},
+            </if>
+            <if test="publish!=null">
+                publish=#{publish},
+            </if>
+            <if test="isbn!=null">
+                isbn=#{isbn},
+            </if>
+            <if test="introduction!=null">
+                introduction=#{introduction},
+            </if>
+            <if test="language!=null">
+                language=#{language},
+            </if>
+            <if test="price!=null">
+                price=#{price},
+            </if>
+            <if test="publishDate!=null">
+                publish_date=#{publishDate},
+            </if>
+            <if test="typeId!=null">
+                type_id=#{typeId},
+            </if>
+            <if test="status!=null">
+                status=#{status}
+            </if>
+        </trim>
+        WHERE id=#{id}
+    </update>
+
+
+
+
+
+
+
+</mapper>

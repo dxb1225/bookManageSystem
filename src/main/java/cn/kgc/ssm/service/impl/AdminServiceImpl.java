@@ -5,6 +5,7 @@ import cn.kgc.ssm.pojo.Admin;
 import cn.kgc.ssm.service.AdminService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,4 +36,33 @@ public class AdminServiceImpl implements AdminService {
         List<Admin> admins = adminMapper.queryAdminAll(admin);
         return new PageInfo<>(admins,5);
     }
+
+    @Override
+    public Admin queryAdminById(Integer id) {
+        return adminMapper.queryAdminById(id);
+    }
+
+    @Override
+    public List<Integer> findAllAdminType() {
+        return adminMapper.findAllAdminType();
+    }
+
+    @Override
+    public int updateAdminById(Admin admin) {
+
+        return adminMapper.updateAdminById(admin);
+    }
+
+    @Override
+    public int addAdmin(Admin admin) {
+
+        return adminMapper.addAdmin(admin);
+    }
+
+    @Override
+    public int deleteAdmin(Integer id) {
+        return adminMapper.deleteAdmin(id);
+    }
+
+
 }

@@ -50,7 +50,7 @@
             layer = layui.layer,
             $ = layui.$;
 
-        $.get("findAllList",{},function (data) {
+        $.get("findAllAdminType",{"id":form.id},function (data) {
             var adminType=$('#adminType')[0].value;
             var list = [{name:"超级管理员",id:"1"},{name:"普通管理员",id:"0"}];
             var select=document.getElementById("adminType");
@@ -69,8 +69,26 @@
             form.render('select');
         },"json")
 
-        form.on('submit(saveBtn)', function () {
-            layer.msg("请联系QQ:1919066898 购买此系统");
+        form.on('submit(saveBtn)', function (data) {
+            console.log(data)
+            $.ajax({
+                url:"admin/updateAdmin",
+                type:"post",
+                data:data.field,
+                dataType:"json",
+                success:function (result){
+                    if (result){
+                        layer.msg("修改成功!",function () {
+                            let index = parent.layer.getFrameIndex(window.name);
+                            setTimeout(function () {parent.layer.close(index)},330,);
+                            parent.location.reload();
+                        });
+                    }else{
+                        layer.msg("修改失败!");
+                    }
+                }
+            })
+            // layer.msg("请联系QQ:1919066898 购买此系统");
         });
     });
 </script>

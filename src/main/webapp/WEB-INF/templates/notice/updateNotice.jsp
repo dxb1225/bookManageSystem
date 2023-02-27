@@ -1,7 +1,7 @@
-<!--<%@ page contentType="text/html;charset=UTF-8" language="java" %>-->
-<!--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>-->
-<!--<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>-->
-<!--<%@ page isELIgnored="false" %>-->
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -49,9 +49,7 @@
             layer = layui.layer,
             $ = layui.$;
 
-        form.on('submit(saveBtn)', function () {
-            layer.msg("请联系QQ:1919066898 购买此系统");
-        });
+
     });
 </script>
 </body>

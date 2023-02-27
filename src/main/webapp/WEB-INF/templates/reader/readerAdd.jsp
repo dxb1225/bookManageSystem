@@ -1,6 +1,7 @@
-<!--<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>-->
-<!--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>-->
-<!--<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>-->
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+
 
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
@@ -23,20 +24,23 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">读者卡号</label>
         <div class="layui-input-block">
-            <input type="text" name="readerNumber" lay-verify="required" lay-reqtext="读者卡号不能为空" placeholder="请输入读者卡号" autocomplete="off" class="layui-input">
+            <input type="text" name="readerNumber" lay-verify="required" lay-reqtext="读者卡号不能为空"
+                   placeholder="请输入读者卡号" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">用户名</label>
         <div class="layui-input-block">
-            <input type="text" name="username" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+            <input type="text" name="username" lay-verify="required" lay-reqtext="用户名不能为空"
+                   placeholder="请输入用户名" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label required">真实姓名</label>
         <div class="layui-input-block">
-            <input type="text" name="realName" lay-verify="required" lay-reqtext="真实姓名不能为空" placeholder="请输入真实姓名" autocomplete="off" class="layui-input">
+            <input type="text" name="realName" lay-verify="required" lay-reqtext="真实姓名不能为空"
+                   placeholder="请输入真实姓名" autocomplete="off" class="layui-input">
         </div>
     </div>
 
@@ -44,28 +48,28 @@
         <label class="layui-form-label required">性别</label>
         <div class="layui-input-block">
             <input type="radio" name="sex" value="男" title="男" checked="checked"/>
-            <input type="radio" name="sex" value="女" title="女" />
+            <input type="radio" name="sex" value="女" title="女"/>
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label required">出生日期</label>
         <div class="layui-input-block">
-            <input type="text" name="birthday" id="date" lay-verify="required"  class="layui-input" autocomplete="off">
+            <input type="text" name="birthday" id="date" lay-verify="required" class="layui-input" autocomplete="off">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label required">联系方式</label>
         <div class="layui-input-block">
-            <input type="text" name="tel" lay-verify="required"  class="layui-input" autocomplete="off">
+            <input type="text" name="tel" lay-verify="required" class="layui-input" autocomplete="off">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label required">邮箱地址</label>
         <div class="layui-input-block">
-            <input type="text" name="email" autocomplete="off"  class="layui-input">
+            <input type="text" name="email" autocomplete="off" class="layui-input">
         </div>
     </div>
 
@@ -77,21 +81,81 @@
 </div>
 <script src="${pageContext.request.contextPath}/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script>
-    layui.use(['form','laydate'], function () {
+    layui.use(['form', 'laydate'], function () {
         var form = layui.form,
             layer = layui.layer,
-            laydate=layui.laydate,
+            laydate = layui.laydate,
             $ = layui.$;
 
         laydate.render({
             elem: '#date',
-            trigger:'click'
+            trigger: 'click'
+        });
+        //监听提交
+        //  form.on('submit(saveBtn)', function (data) {
+        //弹出当前表单的数据
+        //   layer.msg(JSON.stringify(data.field));
+        //   //发起异步提交
+        //  let url='${pageContext.request.contextPath}/addReader';
+        //  $.post(url,{data:data.field},function(result){
+        //    layer.msg(JSON.stringify(data.field)+result);
+        //   if(result>0){
+        //成功的提示
+        //   later.msg('新增成功',{
+        //        icon:1,
+        //         time:2000//2秒关闭（如果不配置，默认是3秒）
+        //      },function (){
+        //do something
+        //关闭当前窗口
+        //           var index=parent.layer.getFrameIndex(window.name); //先得到当前窗口
+
+        //       parent.layer.close(index);//再执行关闭
+
+        //刷新表格(调父页面方法
+        //        parent.reflushTable();
+
+        //     });
+
+        //    }else{
+
+        //错误的提示
+        //      alert("错误"+result);
+        //  }
+        //  })
+        //    return false;
+        //  });
+
+
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            var datas=data.field;//form单中的数据信息
+            //向后台发送数据提交添加
+            $.ajax({
+                url:"addReaderSubmit",
+                type:"POST",
+                //data:datas,
+                contentType:'application/json',
+                data:JSON.stringify(datas),
+                success:function(result){
+                    if(result.code==0){//如果成功
+                        layer.msg('添加成功',{
+                            icon:6,
+                            time:500
+                        },function(){
+                            parent.window.location.reload();
+                            var iframeIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(iframeIndex);
+                        })
+                    }else{
+                        layer.msg("添加失败");
+                    }
+                }
+            })
+            return false;
         });
 
-        form.on('submit(saveBtn)', function () {
-            layer.msg("请联系QQ:1919066898 购买此系统");
-        });
     });
+
 </script>
 </body>
 </html>

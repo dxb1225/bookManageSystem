@@ -1,6 +1,6 @@
-<!--<%@ page contentType="text/html;charset=UTF-8" language="java" %>-->
-<!--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>-->
-<!--<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>-->
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -25,12 +25,19 @@
             <input type="text" name="topic" lay-verify="required" lay-reqtext="公告主题不能为空" placeholder="请输入公告主题" autocomplete="off" class="layui-input">
         </div>
     </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <input type="hidden" name="author" value="${user.id}" lay-verify="required" lay-reqtext="公告主题不能为空" placeholder="请输入公告主题" autocomplete="off" class="layui-input">
+        </div>
+    </div>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label required">公告内容</label>
         <div class="layui-input-block">
             <textarea name="content" lay-verify="required" lay-reqtext="公告内容不能为空" autocomplete="off" placeholder="请输入公告内容"  class="layui-textarea"></textarea>
         </div>
     </div>
+
 
     <div class="layui-form-item">
         <div class="layui-input-block">
@@ -45,8 +52,30 @@
             layer = layui.layer,
             $ = layui.$;
 
-        form.on('submit(saveBtn)', function () {
-            layer.msg("请联系QQ:1919066898 购买此系统");
+        form.on('submit(saveBtn)', function (data) {
+            //发起异步请求
+            var datas = data.field;
+
+            $.ajax({
+                url:"addNoticeSubmit",
+                type:"POST",
+                data:datas,
+                success: function (result){
+                    if(result> 0) {
+                        layer.msg('添加成功', {
+                            icon: 6,
+                            time: 500
+                        }, function () {
+                            var iframeIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(iframeIndex);
+                            parent.location.reload();
+                        })
+                    }else{
+                         layer.msg("添加失败");
+                        }
+                    }
+            })
+                return false;
         });
     });
 </script>

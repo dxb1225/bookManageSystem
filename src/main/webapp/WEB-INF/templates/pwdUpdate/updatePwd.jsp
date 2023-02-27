@@ -1,6 +1,6 @@
-<!--<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false"%>-->
-<!--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>-->
-<!--<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>-->
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -18,7 +18,8 @@
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
-
+        <input type="hidden" name="id" value="${sessionScope.user.id}">
+        <input type="hidden" value="${sessionScope.type}" class="layui-input">
         <div class="layui-form layuimini-form">
             <div class="layui-form-item">
                 <label class="layui-form-label required">旧的密码</label>
@@ -57,14 +58,19 @@
             $ = layui.$;
 
         form.on('submit(saveBtn)', function (data) {
+            console.log(data)
             var datas=data.field;
             if (datas.newPwd != datas.againPwd){
                 layer.msg("两次输入的新密码不一致")
             }else{
-                layer.msg("请联系QQ:1919066898 购买此系统");
+                if (${sessionScope.type.equals("superAdmin")} || ${sessionScope.type.equals("admin")}){
+                    updateAdminPwd(datas);
+                }
             }
             return false;
         });
+
+
 
     });
 </script>

@@ -1,11 +1,12 @@
-<!--<%@ page contentType="text/html;charset=UTF-8" language="java" %>-->
-<!--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>-->
-<!--<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>-->
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
+
     <title>读者管理</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -32,7 +33,7 @@
                 <div class="layui-inline">
                     <input class="layui-input" name="tel" id="tel" autocomplete="off">
                 </div>
-                <button class="layui-btn" data-type="reload">搜索</button>
+                <button id ="btn-search" class="layui-btn" data-type="reload">搜索</button>
             </div>
         </div>
 
@@ -54,6 +55,9 @@
 </div>
 
 <script>
+    function reflushTable(){
+        $("btn-search").click();
+    }
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
@@ -129,8 +133,13 @@
                     layer.full(index);
                 });
             } else if (obj.event === 'delete') {
+
                 layer.confirm('确定是否删除', function (index) {
-                    fun1();
+
+
+                    //调用删除功能
+                    deleteInfoByIds(data.id,index);
+
                     layer.close(index);
                 });
             }
@@ -140,17 +149,43 @@
             console.log(obj)
         });
 
+        /**
+         * 获取选中记录的id信息
+         */
         function getCheackId(data){
             var arr=new Array();
             for(var i=0;i<data.length;i++){
                 arr.push(data[i].id);
             }
+            //拼接id,变成一个字符串
             return arr.join(",");
         };
-
-        function fun1(){
-            layer.msg("请联系QQ:1919066898 购买此系统");
+        /**
+         * 提交删除功能
+         */
+        function deleteInfoByIds(ids ,index){
+            //向后台发送请求
+            $.ajax({
+                url: "deleteReader",
+                type: "POST",
+                data: {ids: ids},
+                success: function (result) {
+                    if (result.code == 0) {//如果成功
+                        layer.msg('删除成功', {
+                            icon: 6,
+                            time: 500
+                        }, function () {
+                            parent.window.location.reload();
+                            var iframeIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(iframeIndex);
+                        });
+                    } else {
+                        layer.msg("删除失败");
+                    }
+                }
+            })
         };
+
 
         table.on('toolbar(currentTableFilter)', function (obj) {
             if (obj.event === 'add') {
@@ -173,7 +208,13 @@
                     layer.msg("请选择要删除的记录信息");
                 }else{
                     layer.confirm('确定是否删除', function (index) {
-                        fun1();
+                        //调用删除功能
+                        getCheackId(data);
+                        for (i=0;i< data.length;i++){
+                            deleteInfoByIds(data[i].id,index);
+                        }
+
+
                         layer.close(index);
                     });
                 }

@@ -1,6 +1,6 @@
-<!--<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>-->
-<!--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>-->
-<!--<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>-->
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
@@ -74,7 +74,7 @@
 
         var $ = layui.$, active = {
             reload: function(){
-                var name = $('#name').val();
+                let name = $('#name').val();
                 console.log(name)
                 table.reload('testReload', {
                     page: {
@@ -88,14 +88,14 @@
         };
 
         $('.demoTable .layui-btn').on('click', function(){
-            var type = $(this).data('type');
+            let type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
-            var data=obj.data;
+            let data=obj.data;
             if (obj.event === 'edit') {
-                var index = layer.open({
+                let index = layer.open({
                     title: '修改图书类型',
                     type: 2,
                     shade: 0.2,
@@ -109,31 +109,73 @@
                 });
             } else if (obj.event === 'delete') {
                 layer.confirm('确定是否删除', function (index) {
-                    fun1();
+                    deleteType(data.id);
                     layer.close(index);
                 });
             }
         });
 
         table.on('checkbox(currentTableFilter)', function (obj) {
-            console.log(obj)
         });
-
-        function getCheackId(data){
-            var arr=new Array();
-            for(var i=0;i<data.length;i++){
+        function deleteType(id){
+            console.log(id)
+            $.ajax({
+                url:"deleteTypeById",
+                type:"post",
+                data: "id="+id,
+                dataType: "json",
+                success:function (result) {
+                    if (result>0){
+                        layer.msg("删除成功！",
+                            {
+                            icon:6,
+                            time: 500
+                            },function () {
+                            let iframeIndex =parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(iframeIndex);
+                            parent.location.reload();
+                        })
+                    }
+                }
+            })
+        }
+        function getCheckId(data){
+            let arr=new Array();
+            for(let i=0;i<data.length;i++){
                 arr.push(data[i].id);
             }
             return arr.join(",");
         };
 
-        function fun1(){
-            layer.msg("请联系QQ:1919066898 购买此系统");
+        function deleteInfoByIds(data){
+            let ids = getCheckId(data);
+            console.log(ids)
+            $.ajax({
+                url: "deleteTypeByIds",
+                data:"ids="+ids,
+                type:"post",
+                dataType:"json",
+                success:function (result) {
+                    if (result>0){
+                        layer.msg('删除成功',{
+                            icon:6,
+                            time: 500
+                        },function () {
+                            let iframeIndex=parent.layer.getFrameIndex(window.name);
+                            parent,layer.close(iframeIndex);
+                            parent.window.location.reload();
+                        });
+                    }else {
+                        layer.msg("删除失败")
+                    }
+                }
+            })
+
         };
 
         table.on('toolbar(currentTableFilter)', function (obj) {
             if (obj.event === 'add') {
-                var index = layer.open({
+                let index = layer.open({
                     title: '添加类型',
                     type: 2,
                     shade: 0.2,
@@ -146,13 +188,14 @@
                     layer.full(index);
                 });
             } else if (obj.event === 'delete') {
-                var checkStatus=table.checkStatus(obj.config.id);
-                var data=checkStatus.data;
+                let checkStatus=table.checkStatus(obj.config.id);
+                let data=checkStatus.data;
                 if(data.length==0){
                     layer.msg("请选择要删除的记录信息");
                 }else{
                     layer.confirm('确定是否删除', function (index) {
-                        fun1();
+                        console.log(data);
+                        deleteInfoByIds(data);
                         layer.close(index);
                     });
                 }

@@ -127,7 +127,7 @@
                 });
             } else if (obj.event === 'delete') {
                 layer.confirm('确定是否删除', function (index) {
-                    fun1();
+                    deleteAdmin(data.id);
                     layer.close(index);
                 });
             }
@@ -144,6 +144,27 @@
             }
             return arr.join(",");
         };
+
+        function deleteAdmin(id){
+            console.log(id);
+            $.ajax({
+                url:"deleteAdmin",
+                type:"post",
+                data:"id="+id,
+                dataType:"json",
+                success:function (result) {
+                    if (result>0){
+                        layer.msg("删除成功!",function () {
+                            let index = parent.layer.getFrameIndex(window.name);
+                            setTimeout(function () {parent.layer.close(index)},330,);
+                            parent.location.reload();
+                        })
+                    }else{
+                        layer.msg("删除失败!");
+                    }
+                }
+            })
+        }
 
         function fun1(){
             layer.msg("请联系QQ:1919066898 购买此系统");

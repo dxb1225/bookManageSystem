@@ -1,7 +1,7 @@
-<!--<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>-->
-<!--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>-->
-<!--<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>-->
-<!--<%@ page isELIgnored="false" %>-->
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -47,8 +47,27 @@
             layer = layui.layer,
             $ = layui.$;
 
-        form.on('submit(saveBtn)', function () {
-            layer.msg("请联系QQ:1919066898 购买此系统");
+        form.on('submit(saveBtn)', function (data) {
+            console.log(data.field)
+            $.ajax({
+                url:"/updateLendListById",
+                type:"post",
+                data:"id="+data.field.id+"&bookId="+data.field.bookId+"&backType="+data.field.backType,
+                dataType:"json",
+                success:function (result) {
+                    if (result > 0) {
+                        layer.msg("还书成功!", {icon: 6, time: 500}, function () {
+                            let index = parent.layer.getFrameIndex(window.name);
+                            setTimeout(function () {
+                                parent.layer.close(index)
+                            }, 330);
+                            parent.location.reload();
+                        })
+                    } else {
+                        layer.msg("还书失败!", {icon: 5})
+                    }
+                }
+            })
         });
     });
 </script>

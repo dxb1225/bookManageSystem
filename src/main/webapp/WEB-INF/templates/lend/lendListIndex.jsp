@@ -1,6 +1,6 @@
-<!--<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>-->
-<!--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>-->
-<!--<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>-->
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -167,7 +167,7 @@
                 });
             } else if (obj.event === 'delete') {
                 layer.confirm('确定是否删除', function (index) {
-                    fun1();
+                    deleteLendListById(data.id,data.bookId);
                     layer.close(index);
                 });
             }else if( obj.event === 'bookInfoEvent') {
@@ -195,10 +195,10 @@
         }
 
         table.on('checkbox(currentTableFilter)', function (obj) {
-            console.log(obj)
+            // console.log(obj)
         });
 
-        function getCheackId(data){
+        function getCheckId(data){
             var arr=new Array();
             for(var i=0;i<data.length;i++){
                 arr.push(data[i].id);
@@ -206,7 +206,7 @@
             return arr.join(",");
         };
 
-        function getCheackBookId(data){
+        function getCheckBookId(data){
             var arr=new Array();
             for(var i=0;i<data.length;i++){
                 arr.push(data[i].bookId);
@@ -214,12 +214,46 @@
             return arr.join(",");
         };
 
-        function fun1(){
-            layer.msg("请联系QQ:1919066898 购买此系统");
+        function deleteLendListById(id,bookId){
+            // layer.msg("请联系QQ:1919066898 购买此系统");
+            console.log(id);
+            $.ajax({
+                url:"/deleteLendListById",
+                type:"post",
+                data: {id:id,bookId:bookId},
+                dataType: "json",
+                success:function (result) {
+                    if (result>0){
+                        layer.msg("删除成功!",{icon:6,time:500},function () {
+                            parent.location.reload();
+                            let iframeIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(iframeIndex);
+                        })
+                    }else{
+                        layer.msg("删除失败!");
+                    }
+                }
+            })
         };
 
-        function fun2(){
-            layer.msg("请联系QQ:1919066898 购买此系统");
+        function backLendListByIds(ids,bookIds,index){
+            $.ajax({
+                url:"backLendListByIds",
+                type:"post",
+                data:{ids:ids,bookIds:bookIds},
+                dataType:"json",
+                success:function (result){
+                    if (result>0){
+                        layer.msg("还书成功!",{icon:6,time:500},function (){
+                            parent.location.reload();
+                            let iframeIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(iframeIndex);
+                        })
+                    }else{
+                        layer.msg("还书失败!");
+                    }
+                }
+            })
         };
 
         table.on('toolbar(currentTableFilter)', function (obj) {
@@ -243,8 +277,10 @@
                 if(data.length==0){
                     layer.msg("请选择要借阅还书的记录信息");
                 }else{
+                    let ids = getCheckId(data);
+                    let bookIds = getCheckBookId(data);
                     layer.confirm('确定还书吗', function (index) {
-                        fun2();
+                        backLendListByIds(ids,bookIds,index);
                         layer.close(index);
                     });
                 }
@@ -255,12 +291,35 @@
                     layer.msg("请选择要删除的记录信息");
                 }else{
                     layer.confirm('确定是否删除', function (index) {
-                        fun1();
+                        let checkId = getCheckId(data);
+                        let checkBookId = getCheckBookId(data);
+                        deleteLendListByIds(checkId,checkBookId);
                         layer.close(index);
                     });
                 }
             }
         });
+
+        function deleteLendListByIds(ids,bookIds){
+            console.log(ids,bookIds)
+            $.ajax({
+                url:"/deleteLendListByIds",
+                type:"post",
+                data:{ids:ids,bookIds:bookIds},
+                dataType:"json",
+                success:function (result) {
+                    if (result>0) {
+                        layer.msg("删除成功!", {icon: 6, time: 500}, function () {
+                            parent.location.reload();
+                            let iframeIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(iframeIndex);
+                        })
+                    }else{
+                        layer.msg("删除失败!",{icon:5,time:500})
+                    }
+                }
+            })
+        }
 
     });
 </script>

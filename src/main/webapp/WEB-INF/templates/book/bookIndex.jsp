@@ -33,7 +33,7 @@
                         <option value="">请选择</option>
                     </select>
                 </div>
-                <button class="layui-btn" data-type="reload">搜索</button>
+                <button  class="layui-btn" data-type="reload">搜索</button>
             </div>
         </div>
 
@@ -55,6 +55,11 @@
 </div>
 
 <script>
+    // function  reflushTable(){
+    //     var $ = layui.$;
+    //     $("#btn-search").click();
+    // }
+
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
@@ -84,7 +89,8 @@
                 layEvent: 'LAYTABLE_TIPS',
                 icon: 'layui-icon-tips'
             }],
-            cols: [[
+            cols: [
+                [
                 {type: "checkbox", width: 50},
                 //{field: 'id', width: 100, title: 'ID', sort: true},
                 {field: 'isbn', width: 140, title: 'ISBN'},
@@ -96,7 +102,8 @@
                 {field: 'language', width: 140, title: '语言'},
                 {field: 'price', width: 140, title: '价格'},
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
-            ]],
+                ]
+            ],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 15,
             page: true,
@@ -146,7 +153,7 @@
                 });
             } else if (obj.event === 'delete') {
                 layer.confirm('确定是否删除', function (index) {
-                    fun1();
+                    fun1(data);
                     layer.close(index);
                 });
             }
@@ -164,8 +171,15 @@
             return arr.join(",");
         };
 
-        function fun1(){
-            layer.msg("请联系QQ:1919066898 购买此系统");
+        function fun1(data){
+            $.post("${pageContext.request.contextPath}/bookdelete?id="+data.id,"id="+data.id,function (result) {
+                if(result>0){
+                    alert("删除成功");
+                    location.reload();
+                }else{
+                    alert("删除失败");
+                }
+            },"json")
         };
 
         table.on('toolbar(currentTableFilter)', function (obj) {
@@ -189,13 +203,31 @@
                     layer.msg("请选择要删除的记录信息");
                 }else{
                     layer.confirm('确定是否删除', function (index) {
-                        fun1();
+                        fun2(data);
                         layer.close(index);
                     });
                 }
             }
         });
+        function fun2(data) {
+            let ids = getCheackId(data);
+            // alert(ids);
+            let url="${pageContext.request.contextPath}/bookdeleteByIds";
+            $.post(url,"ids="+ids,function (result) {
+                if(result>0){
+                    alert("删除成功");
+                    location.reload();
+                }else{
+                    alert("删除失败");
+                }
+
+            },
+                "json"
+            )
+        }
     });
+
+
 </script>
 
 </body>

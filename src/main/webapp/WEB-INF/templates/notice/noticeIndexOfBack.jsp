@@ -1,6 +1,6 @@
-<!--<%@ page contentType="text/html;charset=UTF-8" language="java" %>-->
-<!--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>-->
-<!--<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>-->
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -22,7 +22,7 @@
             <div class="layui-inline">
                 <input class="layui-input" name="topic" id="topic" autocomplete="off">
             </div>
-            <button class="layui-btn" data-type="reload">搜索</button>
+            <button id="btn-search" class="layui-btn" data-type="reload">搜索</button>
         </div>
 
         <script type="text/html" id="toolbarDemo">
@@ -43,6 +43,11 @@
 </div>
 
 <script>
+
+    function reflushTable(){
+        $("#btn-search").click;
+    }
+
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
@@ -62,7 +67,7 @@
                 //{field: 'id', width: 100, title: 'ID', sort: true},
                 {field: 'topic', width: 150, title: '公告主题'},
                 /*{field: 'content', width: 200, title: '公告内容'},*/
-                {field: 'author', width: 150, title: '发布者'},
+                {templet: "<div>{{d.admin.username}}</div>", width: 150, title: '发布者'},
                 {templet:"<div>{{layui.util.toDateString(d.createDate,'yyyy-MM-dd HH:mm:ss')}}</div>", width: 200, title: '发布时间'},
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
@@ -111,17 +116,35 @@
                 });
             } else if (obj.event === 'delete') {
                 layer.confirm('确定是否删除', function (index) {
-                    fun1();
+                    deleteNotice(data.id);
                     layer.close(index);
                 });
             }
         });
 
+        function deleteNotice(id){
+            $.ajax({
+                url: "deleteNotice",
+                type:"post",
+                data:"id="+id,
+                dataType:"json",
+                success:function (result) {
+                    if (result>0){
+                        layer.msg("删除成功！",{icon:6,time:500},function () {
+                            location.reload();
+                        })
+                    }else{
+                        layer.msg("删除失败")
+                    }
+                }
+            })
+        }
+
         table.on('checkbox(currentTableFilter)', function (obj) {
             console.log(obj)
         });
 
-        function getCheackId(data){
+        function getCheckId(data){
             var arr=new Array();
             for(var i=0;i<data.length;i++){
                 arr.push(data[i].id);
@@ -129,8 +152,22 @@
             return arr.join(",");
         };
 
-        function fun1(){
-            layer.msg("请联系QQ:1919066898 购买此系统");
+        function deleteNotices(data){
+            let ids = getCheckId(data);
+            $.post(
+                "deleteNotices",
+                "id="+ids,
+                function (result){
+                    if(result>0){
+                        layer.msg("删除成功！",{icon:6,time:500},function () {
+                            location.reload();
+                        })
+                    }else {
+                        alert("删除失败");
+                    }
+                },
+                "json"
+            )
         };
 
         table.on('toolbar(currentTableFilter)', function (obj) {
@@ -154,7 +191,7 @@
                     layer.msg("请选择要删除的记录信息");
                 }else{
                     layer.confirm('确定是否删除', function (index) {
-                        fun1();
+                        deleteNotices(data);
                         layer.close(index);
                     });
                 }

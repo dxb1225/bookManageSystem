@@ -54,8 +54,26 @@
             layer = layui.layer,
             $ = layui.$;
 
-        form.on('submit(saveBtn)', function () {
-            layer.msg("请联系QQ:1919066898 购买此系统");
+        form.on('submit(saveBtn)', function (data) {
+            console.log(data);
+            $.ajax({
+                url:"/addAdmin",
+                type:"post",
+                data:data.field,
+                dataType:"json",
+                success:function (result) {
+                    if (result>0){
+                        layer.msg("添加成功!",function () {
+                            let index = parent.layer.getFrameIndex(window.name);
+                            setTimeout(function () {parent.layer.close(index)},330);
+                            parent.location.reload();
+                        })
+                    }else{
+                        alert("添加失败!");
+                        form.render();
+                    }
+                }
+            })
         });
 
     });

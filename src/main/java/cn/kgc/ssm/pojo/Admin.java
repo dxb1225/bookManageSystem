@@ -1,5 +1,7 @@
 package cn.kgc.ssm.pojo;
 
+import java.io.Serializable;
+
 /**
  * @Author:邓湘标
  * @Package:cn.kgc.ssm.pojo

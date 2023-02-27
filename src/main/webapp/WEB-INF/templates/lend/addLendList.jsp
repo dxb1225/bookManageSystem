@@ -1,6 +1,6 @@
-<!--<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>-->
-<!--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>-->
-<!--<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>-->
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -88,7 +88,8 @@
                 layEvent: 'LAYTABLE_TIPS',
                 icon: 'layui-icon-tips'
             }],
-            cols: [[
+            cols: [
+                [
                 {type: "checkbox", width: 50},
                 //{field: 'id', width: 100, title: 'ID', sort: true},
                 {field: 'isbn', width: 140, title: 'ISBN'},
@@ -101,7 +102,8 @@
                 {field: 'price', width: 140, title: '价格'},
                 {field: 'status', width: 140, title: '书籍状态'},
                 //{title: '', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
-            ]],
+                ]
+            ],
             done: function(){
                 $("[data-field='status']").children().each(function(){
                     if ($(this).text() != '书籍状态'){
@@ -139,10 +141,11 @@
         };
         $('.demoTable .layui-btn').on('click', function(){
             var type = $(this).data('type');
+            console.log(type)
             active[type] ? active[type].call(this) : '';
         });
 
-        function getCheackId(data){
+        function getCheckId(data){
             var arr=new Array();
             for(var i=0;i<data.length;i++){
                 arr.push(data[i].id);
@@ -150,12 +153,34 @@
             return arr.join(",");
         };
 
-        form.on('submit(saveBtn)', function () {
-            fun5();
+        form.on('submit(saveBtn)', function (data) {
+            let datas = data.field;
+            let selectData = layui.table.checkStatus('testReload').data;
+            let ids = getCheckId(selectData);
+            let readerNumber = datas.readerNumber;
+            let  value={readerNumber:readerNumber,ids:ids};
+            lendBook(value);
         });
 
-        function fun5(){
-            layer.msg("请联系QQ:1919066898 购买此系统");
+        function lendBook(datas){
+            console.log(datas)
+            $.ajax({
+                url:"/addLend",
+                type: "post",
+                data:datas,
+                dataType:"json",
+                success:function (result) {
+                    if (result.code==0){
+                        layer.msg("借书成功!",{icon:6,time:500},function () {
+                            parent.location.reload();
+                            let iframeIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(iframeIndex);
+                        })
+                    }else{
+                        layer.msg(result.msg);
+                    }
+                }
+            })
         };
     });
 </script>
