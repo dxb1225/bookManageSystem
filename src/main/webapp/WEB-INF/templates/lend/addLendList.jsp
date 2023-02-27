@@ -15,6 +15,10 @@
         body {
             background-color: #ffffff;
         }
+
+        .laytable-cell-checkbox .layui-disabled.layui-form-checked i {
+            background: #fff !important;
+        }
     </style>
 </head>
 <body>
@@ -90,7 +94,11 @@
             }],
             cols: [
                 [
-                {type: "checkbox", width: 50},
+                {
+                    templet: "#checkbd",
+                    title: "<input type='checkbox' name='siam_all' title='' lay-skin='primary' lay-filter='siam_all'> ",
+                    width: 60,
+                },
                 //{field: 'id', width: 100, title: 'ID', sort: true},
                 {field: 'isbn', width: 140, title: 'ISBN'},
                 {field: 'name', width: 140, title: '图书名称'},
@@ -104,11 +112,17 @@
                 //{title: '', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
                 ]
             ],
-            done: function(){
+            done: function(res,curr,count){
+            //     // let states = "";
+            //     // for (let i in res.data){
+            //     //     let item = res.data[i];
+            //     //     if (())
+            //     // }
                 $("[data-field='status']").children().each(function(){
                     if ($(this).text() != '书籍状态'){
                         if($(this).text()=='1'){
                             $(this).text("不可借阅")
+                            $(this).prop("disabled",true);
                         }else {
                             $(this).text("可借阅")
                         }
@@ -155,11 +169,23 @@
 
         form.on('submit(saveBtn)', function (data) {
             let datas = data.field;
-            let selectData = layui.table.checkStatus('testReload').data;
-            let ids = getCheckId(selectData);
+            // let selectData = layui.table.checkStatus('testReload').data;
+            let ids = [];
+            $.each($("input[name=siam_one]:checked"), function (i, value) {
+                ids[i] = $(this).attr("data-id");  // 如果需要获取其他的值 需要在模板中把值放到属性中 然后这里就可以拿到了
+            });
             let readerNumber = datas.readerNumber;
             let  value={readerNumber:readerNumber,ids:ids};
             lendBook(value);
+        });
+
+
+        form.on("checkbox(siam_all)", function () {
+            var status = $(this).prop("checked");
+            $.each($("input[name=siam_one]"), function (i, value) {
+                $(this).prop("checked", status);
+            });
+            form.render();
         });
 
         function lendBook(datas){
@@ -168,6 +194,7 @@
                 url:"/addLend",
                 type: "post",
                 data:datas,
+                traditional:true,
                 dataType:"json",
                 success:function (result) {
                     if (result.code==0){
@@ -183,6 +210,11 @@
             })
         };
     });
+</script>
+<script type="text/html" id="checkbd">
+    {{#  if (d.status != 1){ }}
+    <input type="checkbox" name="siam_one" title="" lay-skin="primary" data-id = "{{ d.id }}">
+    {{#  } }}
 </script>
 </body>
 </html>
