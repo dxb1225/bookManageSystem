@@ -5,8 +5,8 @@
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="bookId" jdbcType="INTEGER" property="bookId" />
         <result column="readerId" jdbcType="INTEGER" property="readerId" />
-        <result column="lendDate" jdbcType="DATE" property="lendDate" />
-        <result column="backDate" jdbcType="DATE" property="backDate" />
+        <result column="lendDate" jdbcType="TIMESTAMP" property="lendDate" />
+        <result column="backDate" jdbcType="TIMESTAMP" property="backDate" />
         <result column="backType" jdbcType="INTEGER" property="backType" />
         <result column="exceptRemarks" jdbcType="VARCHAR" property="exceptRemarks" />
     </resultMap>

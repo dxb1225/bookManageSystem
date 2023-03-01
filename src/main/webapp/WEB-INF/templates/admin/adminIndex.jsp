@@ -137,7 +137,7 @@
             console.log(obj)
         });
 
-        function getCheackId(data){
+        function getCheckId(data){
             var arr=new Array();
             for(var i=0;i<data.length;i++){
                 arr.push(data[i].id);
@@ -166,8 +166,25 @@
             })
         }
 
-        function fun1(){
-            layer.msg("请联系QQ:1919066898 购买此系统");
+        function fun1(data){
+            let ids = getCheckId(data);
+            $.ajax({
+                url:"deleteAdminByIds",
+                data:{ids:ids},
+                type:"post",
+                dataType: "json",
+                success:function (result) {
+                    if (result>0) {
+                        layer.msg("删除成功!", {icon: 6, time: 500}, function () {
+                            parent.location.reload();
+                            let iframeIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(iframeIndex);
+                        })
+                    }else{
+                        layer.msg("删除失败!",{icon:5,time:500})
+                    }
+                }
+            })
         };
 
         table.on('toolbar(currentTableFilter)', function (obj) {
@@ -191,7 +208,7 @@
                     layer.msg("请选择要删除的记录信息");
                 }else{
                     layer.confirm('确定是否删除', function (index) {
-                        fun1();
+                        fun1(data);
                         layer.close(index);
                     });
                 }

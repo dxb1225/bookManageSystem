@@ -28,4 +28,6 @@ public interface AdminService {
     int deleteAdmin(Integer id);
 
     int updateAdminPwd(Admin admin);
+
+    int deleteByIds(List<String> ids);
 }

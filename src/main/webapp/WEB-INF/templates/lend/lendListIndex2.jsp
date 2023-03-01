@@ -30,7 +30,7 @@
                     归还类型：
                     <div class="layui-inline">
                         <select class="layui-input" name="type" id="type">
-                            <option value=""></option>
+                            <option value="">请选择</option>
                             <option value="0">正常还书</option>
                             <option value="1">延迟还书</option>
                             <option value="2">破损还书</option>
@@ -40,7 +40,7 @@
                     图书类型：
                     <div class="layui-inline">
                         <select class="layui-input" name="status" id="status">
-                            <option value=""></option>
+                            <option value="">请选择</option>
                             <option value="0">已归还</option>
                             <option value="1">在借中</option>
                         </select>
@@ -61,9 +61,9 @@
         <script type="text/html" id="currentTableBar">
             {{# if(d.backDate==null){ }}
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">异常还书</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+
             {{# }else{ }}
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+
             {{# } }}
         </script>
 
@@ -109,7 +109,7 @@
                             return '<span class="layui-badge layui-bg-red">在借中</span>'
                         }
                     }},
-                /* {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}*/
+                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 15,

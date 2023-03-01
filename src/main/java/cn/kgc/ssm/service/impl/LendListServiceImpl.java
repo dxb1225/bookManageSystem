@@ -67,7 +67,7 @@ public class LendListServiceImpl implements LendListService {
                 lendList.setBackDate(new Date());
                 lendList.setBackType(0);
             }
-            i = lendListMapper.updateByPrimaryKeySelective(lendList);
+            i += lendListMapper.updateByPrimaryKeySelective(lendList);
         }
         for (String bookId : bookIds) {
             BookInfo bookInfo = bookInfoService.findbookInfoById(Integer.valueOf(bookId));
@@ -112,7 +112,9 @@ public class LendListServiceImpl implements LendListService {
         return lendListMapper.addLendList(lendList);
     }
 
+
     //=================================================================================================
+    @Override
     public PageInfo<LendList> queryLendListAll2(LendList lendList, int pageNum, int limit) {
         PageHelper.startPage(pageNum,limit);
         List<LendList> lendLists = lendListMapper.queryLendListAll2(lendList);

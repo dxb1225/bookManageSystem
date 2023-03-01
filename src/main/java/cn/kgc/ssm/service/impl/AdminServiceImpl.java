@@ -69,5 +69,14 @@ public class AdminServiceImpl implements AdminService {
         return adminMapper.updateAdminPwd(admin);
     }
 
+    @Override
+    public int deleteByIds(List<String> ids) {
+        int i =0;
+        for (String id : ids) {
+           i += adminMapper.deleteAdmin(Integer.valueOf(id));
+        }
+        return i;
+    }
+
 
 }

@@ -41,8 +41,8 @@
 
 
     <insert id="addbookInfo" parameterType="bookInfo">
-        INSERT INTO book_info(NAME,author,publish,isbn,introduction,LANGUAGE,price,publish_date,type_id)
-        VALUES (#{name},#{author},#{publish},#{isbn},#{introduction},#{language},#{price},#{publishDate},#{typeId})
+        INSERT INTO book_info(NAME,author,publish,isbn,introduction,LANGUAGE,price,publish_date,type_id,status)
+        VALUES (#{name},#{author},#{publish},#{isbn},#{introduction},#{language},#{price},#{publishDate},#{typeId},#{status})
     </insert>
     <insert id="insertSelective" parameterType="BookInfo">
         insert into book_info
@@ -77,6 +77,9 @@
             <if test="typeId != null">
                 type_id,
             </if>
+            <if test="status != null">
+                status,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -109,8 +112,10 @@
             <if test="typeId != null">
                 #{typeId,jdbcType=INTEGER},
             </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
         </trim>
-            status=0
     </insert>
 
     <delete id="deletebookInfo" parameterType="int">

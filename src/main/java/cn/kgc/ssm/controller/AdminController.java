@@ -12,10 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @Author:邓湘标
@@ -82,6 +79,14 @@ public class AdminController {
     @ResponseBody
     public int deleteAdmin(@Param("id") Integer id){
         int i = adminService.deleteAdmin(id);
+        return i;
+    }
+
+    @RequestMapping("/deleteAdminByIds")
+    @ResponseBody
+    public int deleteAdminByIds(String ids){
+        List<String> idsList = (List<String>) Arrays.asList(ids.split(","));
+        int i = adminService.deleteByIds(idsList);
         return i;
     }
 
