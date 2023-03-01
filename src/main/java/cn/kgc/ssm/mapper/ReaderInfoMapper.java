@@ -28,4 +28,7 @@ public interface ReaderInfoMapper {
     ReaderInfo queryUserInfoByNameAndPassword(@Param("username") String username, @Param("password") String password);
 
 
+    ReaderInfo findUserByNameAndPassword(@Param("username") String username, @Param("password") String password);
+
+    int updateReaderPwd(ReaderInfo readerInfo);
 }

@@ -59,5 +59,15 @@ public class ReaderInfoServiceImpl implements ReaderInfoService {
         }
     }
 
+    @Override
+    public ReaderInfo findUserByNameAndPassword(String username, String oldPwd) {
+        return readerInfoMapper.findUserByNameAndPassword(username,oldPwd);
+    }
+
+    @Override
+    public int updateReaderPwd(ReaderInfo readerInfo) {
+        return readerInfoMapper.updateReaderPwd(readerInfo);
+    }
+
 
 }

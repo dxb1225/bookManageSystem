@@ -5,13 +5,7 @@ import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
-/**
- * @Author:赵宇流
- * @Package:cn.kgc.ssm.service
- * @DESCRIPTION:
- * @DATE: 2023/2/17 11:23
- * @Version:1.0
- */
+
 public interface BookInfoService {
     int addbookInfo(BookInfo bookInfo);
 
@@ -23,5 +17,5 @@ public interface BookInfoService {
     BookInfo findbookInfoById(Integer id);
 
 
-
+    List<BookInfo> getBookCountByType();
 }

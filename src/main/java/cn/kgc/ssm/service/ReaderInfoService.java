@@ -1,5 +1,6 @@
 package cn.kgc.ssm.service;
 
+import cn.kgc.ssm.pojo.Admin;
 import cn.kgc.ssm.pojo.ReaderInfo;
 import com.github.pagehelper.PageInfo;
 
@@ -46,6 +47,8 @@ public interface ReaderInfoService {
      */
     void deleteReaderInfoByIds(List<String> ids);
 
+    ReaderInfo  findUserByNameAndPassword(String username, String oldPwd);
 
+    int updateReaderPwd(ReaderInfo readerInfo);
 
 }

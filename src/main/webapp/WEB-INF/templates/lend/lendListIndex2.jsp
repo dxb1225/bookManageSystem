@@ -164,19 +164,19 @@
                 });
             } else if (obj.event === 'delete') {
                 layer.confirm('确定是否删除', function (index) {
-                    fun3();
+                    deleteLendListById(data.id,data.bookId);
                     layer.close(index);
                 });
             }else if( obj.event === 'bookInfoEvent') {
                 var bid=data.bookId;
-                queryLookBookList("book",bid);
+                queryLookBookList2("book",bid);
             }else{
                 var rid=data.readerId;
-                queryLookBookList("user",rid);
+                queryLookBookList2("user",rid);
             }
         });
 
-        function queryLookBookList(flag,id){
+        function queryLookBookList2(flag,id){
             var index = layer.open({
                 title: '借阅时间线',
                 type: 2,
@@ -184,7 +184,7 @@
                 maxmin:true,
                 shadeClose: true,
                 area: ['60%', '60%'],
-                content: '${pageContext.request.contextPath}/queryLookBookList?id='+id+"&flag="+flag
+                content: '${pageContext.request.contextPath}/queryLookBookList2?id='+id+"&flag="+flag
             });
             $(window).on("resize", function () {
                 layer.full(index);
@@ -195,7 +195,7 @@
             console.log(obj)
         });
 
-        function getCheackId(data){
+        function getCheckId(data){
             var arr=new Array();
             for(var i=0;i<data.length;i++){
                 arr.push(data[i].id);
@@ -203,7 +203,7 @@
             return arr.join(",");
         };
 
-        function getCheackBookId(data){
+        function getCheckBookId(data){
             var arr=new Array();
             for(var i=0;i<data.length;i++){
                 arr.push(data[i].bookId);
@@ -212,12 +212,47 @@
             return arr.join(",");
         };
 
-        function fun3(){
-            layer.msg("请联系QQ:1919066898 购买此系统");
+        function backLendListByIds(ids,bookIds,index){
+           // layer.msg("请联系QQ:1919066898 购买此系统");
+            $.ajax({
+                url:"backLendListByIds",
+                type:"post",
+                data:{ids:ids,bookIds:bookIds},
+                dataType:"json",
+                success:function (result){
+                    if (result>0){
+                        layer.msg("还书成功!",{icon:6,time:500},function (){
+                            parent.location.reload();
+                            let iframeIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(iframeIndex);
+                        })
+                    }else{
+                        layer.msg("还书失败!");
+                    }
+                }
+            })
         };
 
-        function fun4(){
-            layer.msg("请联系QQ:1919066898 购买此系统");
+        function deleteLendListById(id,bookId){
+            //layer.msg("请联系QQ:1919066898 购买此系统");
+            console.log(id);
+            $.ajax({
+                url:"/deleteLendListById",
+                type:"post",
+                data: {id:id,bookId:bookId},
+                dataType: "json",
+                success:function (result) {
+                    if (result>0){
+                        layer.msg("删除成功!",{icon:6,time:500},function () {
+                            parent.location.reload();
+                            let iframeIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(iframeIndex);
+                        })
+                    }else{
+                        layer.msg("删除失败!");
+                    }
+                }
+            })
         };
 
         table.on('toolbar(currentTableFilter)', function (obj) {
@@ -242,7 +277,9 @@
                     layer.msg("请选择要借阅还书的记录信息");
                 }else{
                     layer.confirm('确定还书吗', function (index) {
-                        fun4();
+                        let ids = getCheckId(data);
+                        let bookIds = getCheckBookId(data);
+                        backLendListByIds(ids,bookIds,index);
                         layer.close(index);
                     });
                 }
@@ -253,12 +290,35 @@
                     layer.msg("请选择要删除的记录信息");
                 }else{
                     layer.confirm('确定是否删除', function (index) {
-                        fun3();
+                        let checkId = getCheckId(data);
+                        let checkBookId = getCheckBookId(data);
+                        deleteLendListByIds(ids,bookIds);
                         layer.close(index);
                     });
                 }
             }
         });
+
+        function deleteLendListByIds(ids,bookIds){
+            console.log(ids,bookIds)
+            $.ajax({
+                url:"/deleteLendListByIds",
+                type:"post",
+                data:{ids:ids,bookIds:bookIds},
+                dataType:"json",
+                success:function (result) {
+                    if (result>0) {
+                        layer.msg("删除成功!", {icon: 6, time: 500}, function () {
+                            parent.location.reload();
+                            let iframeIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(iframeIndex);
+                        })
+                    }else{
+                        layer.msg("删除失败!",{icon:5,time:500})
+                    }
+                }
+            })
+        }
 
     });
 </script>

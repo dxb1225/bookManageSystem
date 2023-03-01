@@ -26,4 +26,7 @@ public interface AdminMapper {
     int addAdmin(Admin admin);
 
     int deleteAdmin(@Param("id") Integer id);
+
+
+    int updateAdminPwd(Admin admin);
 }

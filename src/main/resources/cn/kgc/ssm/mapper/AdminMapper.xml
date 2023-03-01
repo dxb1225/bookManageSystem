@@ -56,4 +56,16 @@
     <select id="findAllAdminType" resultType="integer">
         select adminType from admin
     </select>
+
+    <update id="updateAdminPwd" parameterType="admin">
+        update admin
+        <set>
+            <if test="password !=null and password != ''">
+                password=#{password},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+
 </mapper>

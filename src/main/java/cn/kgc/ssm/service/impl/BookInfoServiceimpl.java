@@ -51,5 +51,10 @@ public class BookInfoServiceimpl implements BookInfoService {
         return bookInfoMapper.findbookInfoById(id);
     }
 
+    @Override
+    public List<BookInfo> getBookCountByType() {
+        return bookInfoMapper.getBookCountByType();
+    }
+
 
 }

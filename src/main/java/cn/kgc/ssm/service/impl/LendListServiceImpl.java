@@ -111,4 +111,12 @@ public class LendListServiceImpl implements LendListService {
     public int addLendList(LendList lendList) {
         return lendListMapper.addLendList(lendList);
     }
+
+    //=================================================================================================
+    public PageInfo<LendList> queryLendListAll2(LendList lendList, int pageNum, int limit) {
+        PageHelper.startPage(pageNum,limit);
+        List<LendList> lendLists = lendListMapper.queryLendListAll2(lendList);
+        PageInfo pageInfo =  new PageInfo<>(lendLists);
+        return pageInfo;
+    }
 }

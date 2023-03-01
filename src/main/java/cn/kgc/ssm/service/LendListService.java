@@ -51,4 +51,7 @@ public interface LendListService {
     int deleteLendListByIds(List<String> list, List<String> blist);
 
     int addLendList(LendList lendList);
+
+    //================================================================================================
+    PageInfo<LendList> queryLendListAll2(LendList lendList, int pageNum, int limit);
 }

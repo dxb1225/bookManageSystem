@@ -67,4 +67,14 @@ public class Admin {
                 ", adminType=" + adminType +
                 '}';
     }
+
+    public Admin(String username, String OldPwd) {
+        this.username = username;
+        this.password = OldPwd;
+    }
+
+    public Admin(Integer id,String newPwd) {
+        this.id = id;
+        this.password = newPwd;
+    }
 }

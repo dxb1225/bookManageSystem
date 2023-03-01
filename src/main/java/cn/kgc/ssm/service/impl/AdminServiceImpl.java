@@ -64,5 +64,10 @@ public class AdminServiceImpl implements AdminService {
         return adminMapper.deleteAdmin(id);
     }
 
+    @Override
+    public int updateAdminPwd(Admin admin) {
+        return adminMapper.updateAdminPwd(admin);
+    }
+
 
 }

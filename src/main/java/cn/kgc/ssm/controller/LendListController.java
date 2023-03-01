@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -163,5 +164,35 @@ public class LendListController {
         return DataInfo.ok();
     }
 
+
+//==================================================================================================================
+
+    @RequestMapping("/queryLookBookList2")
+    public String queryLookBookList(HttpServletRequest request, Model model){
+        ReaderInfo readerInfo = (ReaderInfo) request.getSession().getAttribute("user");
+        List<LendList> list = lendListService.queryLookBookList(readerInfo.getId(),null);
+        model.addAttribute("info",list);
+        return "lend/lookBookList";
+    }
+
+    @RequestMapping("/lendListAll2")
+    @ResponseBody
+    public DataInfo lendListAll2(Integer type, String readerNumber, String name, Integer status,
+                                @RequestParam(defaultValue = "1")Integer pageNum,@RequestParam(defaultValue = "15")Integer limit,HttpServletRequest request){
+        LendList lendList = new LendList();
+        lendList.setBackType(type);
+        ReaderInfo reader = new ReaderInfo();
+        reader.setReaderNumber(readerNumber);
+        ReaderInfo readerInfo = (ReaderInfo) request.getSession().getAttribute("user");
+        Integer id = readerInfo.getId();
+        reader.setId(id);
+        lendList.setReaderInfo(reader);
+        BookInfo bookInfo = new BookInfo();
+        bookInfo.setName(name);
+        bookInfo.setStatus(status);
+        lendList.setBookInfo(bookInfo);
+        PageInfo<LendList> pageInfo =lendListService.queryLendListAll2(lendList,pageNum,limit);
+        return DataInfo.ok("ok",pageInfo.getTotal(),pageInfo.getList());
+    }
 
 }

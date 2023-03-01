@@ -18,8 +18,9 @@
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
-        <input type="hidden" name="id" value="${sessionScope.user.id}">
-        <input type="hidden" value="${sessionScope.type}" class="layui-input">
+        <input type="hidden" name="id" id="id" value="${sessionScope.user.id}">
+        <input type="hidden" name="username" id="username" value="${sessionScope.user.username}">
+        <input type="hidden" id="type" value="${sessionScope.type}" class="layui-input">
         <div class="layui-form layuimini-form">
             <div class="layui-form-item">
                 <label class="layui-form-label required">旧的密码</label>
@@ -37,7 +38,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label required">确认密码</label>
                 <div class="layui-input-block">
-                    <input type="password" name="againPwd" id="againPwd" lay-verify="required" lay-reqtext="密码不能为空" placeholder="请输入新的密码"  value="" class="layui-input">
+                    <input type="password" name="password" id="againPwd" lay-verify="required" lay-reqtext="密码不能为空" placeholder="请输入新的密码"  value="" class="layui-input">
                 </div>
             </div>
 
@@ -60,19 +61,111 @@
         form.on('submit(saveBtn)', function (data) {
             console.log(data)
             var datas=data.field;
-            if (datas.newPwd != datas.againPwd){
+            if (datas.newPwd != datas.password){
                 layer.msg("两次输入的新密码不一致")
             }else{
                 if (${sessionScope.type.equals("superAdmin")} || ${sessionScope.type.equals("admin")}){
-                    updateAdminPwd(datas);
+                   updateAdminPwd(datas);
+                }else{
+                    updateReaderPwd(datas);
                 }
             }
             return false;
+
+
+
         });
+        function updateReaderPwd(datas) {
+            let url="${pageContext.request.contextPath}/updateReaderPwd";
+            let data="password="+datas.password+"&id="+$("#id").val();
+            $.ajax({
+                url:url,
+                data:data,
+                type:"post",
+                dataType:"json",
+                success:function (result) {
+                    if (result){
+                        layer.msg('修改成功',function(){
+                            let index = parent.layer.getFrameIndex(window.name);
+                            setTimeout(function () {parent.layer.close(index)},330);
+                            parent.location.reload();
+                        });
 
+                    }else{
+                        alert("修改失败");
 
+                    }
+
+                }
+            })
+
+        }
+
+        function updateAdminPwd(datas) {
+            let url="${pageContext.request.contextPath}/updateAdminPwd";
+            let data="password="+datas.password+"&id="+$("#id").val();
+            $.ajax({
+                url:url,
+                data:data,
+                type:"post",
+                dataType:"json",
+                success:function (result) {
+                    if (result){
+                        layer.msg('修改成功',function(){
+                            let index = parent.layer.getFrameIndex(window.name);
+                            setTimeout(function () {parent.layer.close(index)},330);
+                            parent.location.reload();
+                        });
+
+                    }else{
+                        alert("修改失败");
+
+                    }
+
+                }
+            })
+
+        }
+            $("#oldPwd").blur(function () {
+                if (${sessionScope.type.equals("superAdmin")}||${sessionScope.type.equals("admin")}){
+                    let url="${pageContext.request.contextPath}/checkOldPwd";
+                    let data="oldPwd="+$(this).val()+"&username="+$("#username").val();
+                    $.ajax({
+                        url:url,
+                        data:data,
+                        type:"get",
+                        dataType:"json",
+                        success:function (result) {
+                            if (result){
+                                layer.msg("密码正确")
+                            }else{
+                                layer.msg("密码不正确")
+                            }
+                        },
+                    })
+                } else if(${sessionScope.type.equals("reader")}){
+                    let url="${pageContext.request.contextPath}/checkOldPwdRea";
+                    let data="oldPwd="+$(this).val()+"&username="+$("#username").val();
+                    $.ajax({
+                        url:url,
+                        data:data,
+                        type:"get",
+                        dataType:"json",
+                        success:function (result) {
+                            if (result){
+                                layer.msg("密码正确")
+                            }else{
+                                layer.msg("密码不正确")
+                            }
+                        },
+                    })
+                }
+
+            })
 
     });
+
+
 </script>
 </body>
 </html>

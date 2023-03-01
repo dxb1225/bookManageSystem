@@ -26,4 +26,8 @@ public interface LendListMapper {
     int addLendList(LendList lendList);
 
     int insertSelective(LendList lendList);
+
+
+    //=================================================================================================
+    List<LendList> queryLendListAll2(LendList lendList);
 }

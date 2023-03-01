@@ -1,6 +1,7 @@
 package cn.kgc.ssm.controller;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
+import cn.kgc.ssm.pojo.Admin;
 import cn.kgc.ssm.pojo.ReaderInfo;
 import cn.kgc.ssm.service.AdminService;
 import cn.kgc.ssm.service.LendListService;
@@ -87,5 +88,27 @@ public class ReaderInfoController {
         List<String> list= Arrays.asList(ids.split(","));
         readerInfoService.deleteReaderInfoByIds(list);
         return DataInfo.ok();
+    }
+    @RequestMapping(value = "/checkOldPwdRea", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean checkOldPwdRea(@RequestParam("oldPwd") String oldPwd,@RequestParam("username") String username){
+        boolean flag=false;
+        ReaderInfo readerInfo = readerInfoService.findUserByNameAndPassword(username, oldPwd);
+        if (readerInfo!=null){
+            flag=true;
+        }
+        return flag;
+    }
+
+    @RequestMapping(value = "/updateReaderPwd", method = RequestMethod.POST)
+    @ResponseBody
+    public int updateAdminPwd(@RequestParam("password") String newPwd,@RequestParam("id") Integer id){
+        boolean flag=false;
+        ReaderInfo readerInfo = new ReaderInfo(id,newPwd);
+        int i = readerInfoService.updateReaderPwd(readerInfo);
+        if (i>0){
+            flag=true;
+        }
+        return i;
     }
 }

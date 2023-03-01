@@ -10,10 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -85,6 +82,29 @@ public class AdminController {
     @ResponseBody
     public int deleteAdmin(@Param("id") Integer id){
         int i = adminService.deleteAdmin(id);
+        return i;
+    }
+
+
+    @RequestMapping(value = "/checkOldPwd", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean checkOldPwd(@RequestParam("oldPwd") String oldPwd,@RequestParam("username") String username){
+        boolean flag=false;
+        Admin admin = adminService.queryUserByNameAndPassword(username, oldPwd);
+        if (admin!=null){
+            flag=true;
+        }
+        return flag;
+    }
+    @RequestMapping(value = "/updateAdminPwd", method = RequestMethod.POST)
+    @ResponseBody
+    public int updateAdminPwd(@RequestParam("password") String newPwd,@RequestParam("id") Integer id){
+        boolean flag=false;
+        Admin admin = new Admin(id,newPwd);
+        int i = adminService.updateAdminPwd(admin);
+        if (i>0){
+            flag=true;
+        }
         return i;
     }
 

@@ -147,6 +147,11 @@ public class    ReaderInfo {
         this.readerNumber = readerNumber;
     }
 
+    public ReaderInfo(int id, String password) {
+        this.id = id;
+        this.password = password;
+    }
+
     public ReaderInfo() {
     }
 }

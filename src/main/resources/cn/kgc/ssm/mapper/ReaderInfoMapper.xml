@@ -177,6 +177,7 @@
     </update>
 
 
+
     <select id="queryAllReaderInfo" resultType="cn.kgc.ssm.pojo.ReaderInfo" parameterType="cn.kgc.ssm.pojo.ReaderInfo">
         select * from reader_info
         <where>
@@ -213,4 +214,18 @@
         delete from reader_info
         where id = #{id,jdbcType=INTEGER}
     </delete>
+
+    <select id="findUserByNameAndPassword" resultType="readerInfo">
+        select * from reader_info where username=#{username} and password=#{password}
+    </select>
+
+    <update id="updateReaderPwd" parameterType="readerInfo">
+        update reader_info
+        <set>
+            <if test="password !=null and password != ''">
+                password=#{password},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
 </mapper>

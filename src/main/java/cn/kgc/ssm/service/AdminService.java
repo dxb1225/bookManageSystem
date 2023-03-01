@@ -26,4 +26,6 @@ public interface AdminService {
     int addAdmin(Admin admin);
 
     int deleteAdmin(Integer id);
+
+    int updateAdminPwd(Admin admin);
 }

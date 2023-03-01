@@ -25,10 +25,9 @@ public class BookInfo {
     private TypeInfo typeInfo;
     private Integer status;
 
-    public BookInfo() {
-    }
+    private Integer counts;
 
-    public BookInfo(Integer id, String name, String author, String publish, String isbn, String introduction, String language, double price, Date publishDate, Integer typeId, TypeInfo typeInfo, Integer status) {
+    public BookInfo(Integer id, String name, String author, String publish, String isbn, String introduction, String language, double price, Date publishDate, Integer typeId, TypeInfo typeInfo, Integer status, Integer counts) {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -41,6 +40,37 @@ public class BookInfo {
         this.typeId = typeId;
         this.typeInfo = typeInfo;
         this.status = status;
+        this.counts = counts;
+    }
+
+    @Override
+    public String toString() {
+        return "BookInfo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", publish='" + publish + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", introduction='" + introduction + '\'' +
+                ", language='" + language + '\'' +
+                ", price=" + price +
+                ", publishDate=" + publishDate +
+                ", typeId=" + typeId +
+                ", typeInfo=" + typeInfo +
+                ", status=" + status +
+                ", counts=" + counts +
+                '}';
+    }
+
+    public Integer getCounts() {
+        return counts;
+    }
+
+    public void setCounts(Integer counts) {
+        this.counts = counts;
+    }
+
+    public BookInfo() {
     }
 
     public Integer getId() {
@@ -125,24 +155,6 @@ public class BookInfo {
 
     public Integer getStatus() {
         return status;
-    }
-
-    @Override
-    public String toString() {
-        return "BookInfo{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", author='" + author + '\'' +
-                ", publish='" + publish + '\'' +
-                ", isbn='" + isbn + '\'' +
-                ", introduction='" + introduction + '\'' +
-                ", language='" + language + '\'' +
-                ", price=" + price +
-                ", publishDate=" + publishDate +
-                ", typeId=" + typeId +
-                ", typeInfo=" + typeInfo +
-                ", status=" + status +
-                '}';
     }
 
     public void setStatus(Integer status) {
