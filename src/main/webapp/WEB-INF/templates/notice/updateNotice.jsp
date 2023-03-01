@@ -31,7 +31,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">发布人</label>
         <div class="layui-input-block">
-            <input type="text" name="author" readonly="true" value="${info.author}" class="layui-input">
+            <input type="text" name="author" readonly="true" value="${info.admin.username}" class="layui-input">
         </div>
     </div>
 

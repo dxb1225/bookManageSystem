@@ -27,7 +27,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public Notice queryNoticeById(Integer id) {
-        return noticeMapper.selectByPrimaryKey(id);
+        return noticeMapper.findNotice(id);
     }
 
     @Override

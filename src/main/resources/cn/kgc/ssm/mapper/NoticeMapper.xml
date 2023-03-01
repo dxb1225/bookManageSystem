@@ -89,12 +89,13 @@
     </update>
     
     <update id="updateByPrimaryKey" parameterType="notice">
-        update notice
+        update notice n,admin a
         set topic = #{topic,jdbcType=VARCHAR},
             content = #{content,jdbcType=VARCHAR},
             author = #{author,jdbcType=VARCHAR},
             createDate = #{createDate,jdbcType=TIMESTAMP},
-        where id = #{id,jdbcType=INTEGER}
+            a.username = #{username,jdbcType=VARCHAR},
+        where n.id = #{id,jdbcType=INTEGER} and n.author = a.id
     </update>
 
     <select id="queryNoticeAll" parameterType="notice" resultMap="BaseResuLtMap">
@@ -106,6 +107,9 @@
             </if>
         </where>
         order by createDate desc
+    </select>
+    <select id="findNotice" resultType="Notice" resultMap="BaseResuLtMap">
+        select n.*,a.* from notice n,admin a where n.author = a.id and n.id = #{id}
     </select>
 
     <delete id="delNotice" parameterType="integer">

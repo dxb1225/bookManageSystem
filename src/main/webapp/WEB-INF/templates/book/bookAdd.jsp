@@ -83,6 +83,7 @@
             <textarea name="introduction" class="layui-textarea" placeholder="请输入介绍信息"></textarea>
         </div>
     </div>
+    <input type="hidden" name="status" value="0">
 
     <div class="layui-form-item">
         <div class="layui-input-block">

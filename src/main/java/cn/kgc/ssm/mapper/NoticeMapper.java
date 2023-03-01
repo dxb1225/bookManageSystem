@@ -24,4 +24,6 @@ public interface NoticeMapper {
     //删除多个公告
     int delNotices(List<String> ids);
 
+    Notice findNotice(Integer id);
+
 }
