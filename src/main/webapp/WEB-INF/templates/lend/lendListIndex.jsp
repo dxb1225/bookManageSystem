@@ -112,7 +112,21 @@
                       }
                     }},
                 {title: '操作', minWidth: 140, toolbar: '#currentTableBar', align: "center"}
-            ]],
+            ]]
+            ,
+            // parseData:function (res) {
+            //     console.log(res)
+            //     return {
+            //         "code": res.code, //解析接口状态
+            //         "msg": res.msg, //解析提示文本
+            //         "count": res.total, //解析数据长度
+            //         "data": res.data //解析数据列表
+            //     }
+            // },
+            request:{
+                pageName:'pageNum',
+                limitName:'limit'
+            },
             limits: [10, 15, 20, 25, 50, 100],
             limit: 15,
             page: true,

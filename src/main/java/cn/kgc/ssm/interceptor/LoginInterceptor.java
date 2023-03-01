@@ -19,6 +19,9 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
+
+        String newURI = requestURI.substring(requestURI.lastIndexOf("/"));
+        System.out.println("newURI = " + newURI);
         System.out.println("拦截到的请求是:"+requestURI);
         HttpSession session = request.getSession();
 
@@ -26,7 +29,6 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (user!=null){
             return true;
         }
-        request.setAttribute("msg", "请先登录!");
         request.getRequestDispatcher("/").forward(request, response);
         return false;
     }

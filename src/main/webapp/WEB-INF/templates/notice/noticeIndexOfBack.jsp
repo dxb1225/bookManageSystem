@@ -71,6 +71,10 @@
                 {templet:"<div>{{layui.util.toDateString(d.createDate,'yyyy-MM-dd HH:mm:ss')}}</div>", width: 200, title: '发布时间'},
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
+            request:{
+                pageName:'pageNum',
+                limitName:'limit'
+            },
             limits: [10, 15, 20, 25, 50, 100],
             limit: 15,
             page: true,

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -176,7 +176,19 @@
             });
             let readerNumber = datas.readerNumber;
             let  value={readerNumber:readerNumber,ids:ids};
-            lendBook(value);
+            if (${sessionScope.type.equals("superAdmin")}||${sessionScope.type.equals("admin")}){
+                lendBook(value);
+            } else if(${sessionScope.type.equals("reader")}){
+                <c:if test="${sessionScope.type == 'reader'}">
+                let a=${sessionScope.user.readerNumber};
+                if (a==readerNumber){
+                    lendBook(value);
+                }else{
+                    layer.msg("卡号不正确");
+                }
+                </c:if>
+            }
+
         });
 
 
